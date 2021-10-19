@@ -3,7 +3,7 @@ import pako from './inflater.js';
 import fetch from 'node-fetch';
 import * as Type from './discord_types'
 import { readFileSync } from "fs";
-
+import { inspect } from "util";
 
 
 class Discord {
@@ -154,23 +154,30 @@ class Discord {
                 } else if(json.op == 11) {
                     console.log("Got Heartbeat responce")
                 } else if(json.op == 0) {
-                    if(json.t == 'SESSIONS_REPLACE') console.log('SESSIONS_REPLACE');
-                    else if(json.t == 'PRESENCE_UPDATE') console.log('PRESENCE_UPDATE');
-                    else if(json.t == 'MESSAGE_CREATE') console.log('MESSAGE_CREATE');
-                    else if(json.t == 'MESSAGE_UPDATE') console.log('MESSAGE_UPDATE');
-                    else if(json.t == 'READY_SUPPLEMENTAL') console.log('READY_SUPPLEMENTAL');
-                    else if(json.t == 'READY') console.log('READY');
-                    else if(json.t == 'MESSAGE_REACTION_ADD') {
-                        console.log('MESSAGE_REACTION_ADD');
-                        this.handler["MESSAGE_REACTION_ADD"](json.d);
+                    let known_types: Array<Type.MESSAGE_TYPE> = [
+                        'SESSIONS_REPLACE' ,
+                        'PRESENCE_UPDATE',
+                        'MESSAGE_CREATE',
+                        'MESSAGE_UPDATE',
+                        'READY_SUPPLEMENTAL',
+                        'READY',
+                        'MESSAGE_REACTION_ADD',
+                        'VOICE_STATE_UPDATE',
+                        'MESSAGE_DELETE',
+                        'GUILD_INTEGRATIONS_UPDATE',
+                        'INTEGRATION_UPDATE',
+                        'GUILD_EMOJIS_UPDATE',
+                        'CHANNEL_UPDATE',
+                        'GUILD_BAN_ADD',
+                        'CHANNEL_PINS_UPDATE',
+                        'GUILD_MEMBER_UPDATE'
+                    ];
+                    if(json.t == "MESSAGE_CREATE") console.log(inspect(json.d, false, null, true));
+                    if(known_types.indexOf(json.t) != -1) {
+                        console.log(json.t);
+                        let handler = this.handler[json.t]
+                        if(handler) handler(json.d);
                     }
-                    else if(json.t == 'VOICE_STATE_UPDATE') console.log('VOICE_STATE_UPDATE');
-                    else if(json.t == 'MESSAGE_DELETE') console.log('MESSAGE_DELETE');
-                    else if(json.t == 'GUILD_INTEGRATIONS_UPDATE') console.log('GUILD_INTEGRATIONS_UPDATE');
-                    else if(json.t == 'INTEGRATION_UPDATE') console.log('INTEGRATION_UPDATE');
-                    else if(json.t == 'GUILD_EMOJIS_UPDATE') console.log('GUILD_EMOJIS_UPDATE');
-                    else if(json.t == 'CHANNEL_UPDATE') console.log('CHANNEL_UPDATE');
-                    else if(json.t == 'GUILD_BAN_ADD') console.log('GUILD_BAN_ADD');
                     else console.log(json);
                 }
                 else 
