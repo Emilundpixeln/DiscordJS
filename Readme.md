@@ -9,4 +9,4 @@ Create `token.json` with the content:
     "token":  "token here"
 }
 ```
-Run `tsc && node main.js`.
+Run `tsc && node example.js`.

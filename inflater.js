@@ -1,4 +1,4 @@
-
+// Extracted pako library from the discord source code
 
 let pack = {
     0: function (e, t, n) {
