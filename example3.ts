@@ -2,9 +2,17 @@ import { WebSocketServer, WebSocket }  from 'ws';
 import { MESSAGE_CREATE } from "./discord_types.js";
 import { Discord } from "./main.js";
 
+/*
+This example will track the spotify playing status of a user (follow_id) and 
+send progress data out on a websocket.
+This data can be received to synchronize playback. (See example3/readme.md)
+*/
+
+
+
 const wss_sender = new WebSocketServer({ port: 8081 });
 
-let follow_id = "207864830806196227";
+let follow_id = "304649370005929985";
 
 let reciever = null;
 
@@ -20,7 +28,7 @@ wss_sender.on('connection', function connection(ws) {
 let disc = new Discord();
 disc.on_PRESENCE_UPDATE(async (data) => {
 
-    if(data.activities == 0 || data.user.id != "304649370005929985")
+    if(data.activities == 0 || data.user.id != follow_id)
         return;
     let e = data.activities.filter((e) => e.id == "spotify:1");
     if(e.length != 1) {

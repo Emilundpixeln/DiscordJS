@@ -2,6 +2,12 @@ import { MESSAGE_CREATE } from "./discord_types.js";
 import { Discord } from "./main.js";
 import * as _text2png from 'text2png'; let text2png = _text2png.default;
 
+/*
+This example will intercept all messages by the user and if they start 
+with `!render ` the following text will be rendered to an image which will replace
+the original message, allowing for costum fonts, sizes and color.
+*/
+
 
 // Edit a message on reaction.
 let disc = new Discord();

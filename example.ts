@@ -1,6 +1,12 @@
 import { MESSAGE_CREATE } from "./discord_types.js";
 import { Discord } from "./main.js";
 
+/*
+This example will periodically send out a status message to 
+create the `Listening to Spotify` status, with arbitrary data.
+*/
+
+
 const spot_message = () => {
     let shuffle = function (a: Array<string>): string {
         var n = a.length;
