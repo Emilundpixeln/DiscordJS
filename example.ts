@@ -1,3 +1,4 @@
+import { MESSAGE_CREATE } from "./discord_types.js";
 import { Discord } from "./main.js";
 
 const spot_message = () => {
@@ -15,6 +16,7 @@ const spot_message = () => {
     
     let empty = "‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌";
     let d = new Date();
+    let millis = Date.now();
     let prog =  ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds(); 
     let name = shuffle(["🍉", "💯", "⛺", "🧭", "🔥", "✨"]);
     return {
@@ -32,7 +34,7 @@ const spot_message = () => {
                     },
                     "details": empty,
                     "timestamps": {
-                        "start": prog,
+                        "start": millis - prog,
                         "end": 1337000000000 * 60 * 60
                     },
                     "party": {
@@ -52,13 +54,7 @@ const spot_message = () => {
     }
 }
 
-// Edit a message on reaction.
 let disc = new Discord();
-disc.on_MESSAGE_REACTION_ADD((d) => {
-    if(d.message_id != '899754609961230346') return;
-    console.log(d);
-    disc.edit_message('830260317040541697', d.message_id, d.member.user.username + ": <:" + d.emoji.name + ":" + d.emoji.id + ">");
-})
 
 // Send a message to create a `listening to Spotify` status.
 setInterval(() => {
